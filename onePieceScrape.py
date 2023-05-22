@@ -4,16 +4,19 @@ import requests, os, bs4, re
 lastChapterNum = 1084
 lastChapter = "https://read-onepiece.one/comic/one-piece-chapter-" + str(lastChapterNum)
 
-url = "https://read-onepiece.one/"
+url_main = "https://read-onepiece.one/"
 
-print(url)
+
+print(url_main)
 
 os.makedirs('OnePiece', exist_ok=True)
 
 print("Downloading ")
-res = requests.get(url)
-res.raise_for_status()
-soup = bs4.BeautifulSoup(res.text, "html.parser")
+res_main = requests.get(url_main)
+res_main.raise_for_status()
+soup_main = bs4.BeautifulSoup(res_main.text, "html.parser")
+
+
 
 # print(soup)
 
@@ -22,25 +25,16 @@ soup = bs4.BeautifulSoup(res.text, "html.parser")
 
 # print(soup.body.find_all("a", href=re.compile(lastChapter)))
 
+result = soup_main.body.find_all("a", href=re.compile(lastChapter))
 
+print(result)
 
+if lastChapter in str(result):
+    print("New chapter found")
+    res = requests.get(lastChapter)
+    res.raise_for_status()
+    soup = bs4.BeautifulSoup(res.content)
 
-
-# Search for a fragment of a string using a regular expression
-
-# text = 'last-chapter'
-# pattern = re.compile(html)
-# tag_with_fragment = soup.find_all(string=pattern)
-# print(tag_with_fragment)        
-
-#while chapter == []:
-#    chapter = soup.select('new-chapter')
-#    print("Not latest chapter")
-#    lastChapter = str(int(lastChapter)+1)
-#    return lastChapter
-#else:
     
-
-
-
-# for tag in soup.find_all(re.compile("data-src")
+else:
+    print("No new chapter today")
