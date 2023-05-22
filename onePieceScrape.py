@@ -1,7 +1,8 @@
 #! python3
 import requests, os, bs4, re
 
-lastChapter = str(1082)
+lastChapterNum = 1084
+lastChapter = "https://read-onepiece.one/comic/one-piece-chapter-" + str(lastChapterNum)
 
 url = "https://read-onepiece.one/"
 
@@ -14,10 +15,16 @@ res = requests.get(url)
 res.raise_for_status()
 soup = bs4.BeautifulSoup(res.text, "html.parser")
 
-print(soup)
+# print(soup)
 
 
-#Look for "last-chapter" tag
+#Look for link to new chapter
+
+# print(soup.body.find_all("a", href=re.compile(lastChapter)))
+
+
+
+
 
 # Search for a fragment of a string using a regular expression
 
