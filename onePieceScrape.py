@@ -1,8 +1,8 @@
 #! python3
-import requests, os, bs4, re
+import requests, os, bs4, re, lxml
 
-lastChapterNum = 1084
-lastChapter = "https://read-onepiece.one/comic/one-piece-chapter-" + str(lastChapterNum)
+newChapterNum = 1084
+newChapter = "https://read-onepiece.one/comic/one-piece-chapter-" + str(newChapterNum)
 
 url_main = "https://read-onepiece.one/"
 
@@ -25,16 +25,22 @@ soup_main = bs4.BeautifulSoup(res_main.text, "html.parser")
 
 # print(soup.body.find_all("a", href=re.compile(lastChapter)))
 
-result = soup_main.body.find_all("a", href=re.compile(lastChapter))
+result = soup_main.body.find_all("a", href=re.compile(newChapter))
 
 print(result)
 
-if lastChapter in str(result):
+if newChapter in str(result):
     print("New chapter found")
-    res = requests.get(lastChapter)
+    res = requests.get(newChapter)
     res.raise_for_status()
-    soup = bs4.BeautifulSoup(res.content)
+    soup_new = bs4.BeautifulSoup(res.content, 'lxml')
+    images = soup_new.select('img')
+    print(len(images))
 
-    
+    for image in images:
+            print(image['data-src'])
+
+
+
 else:
     print("No new chapter today")
